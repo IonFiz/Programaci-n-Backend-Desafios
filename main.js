@@ -1,4 +1,11 @@
 const fs = require('fs');
+
+//servidor
+const express = require('express');
+const aplicacion = express();
+const port = 8080;
+//servidor
+
 class Contenedor {
     constructor(nombre){
         this.nombre = nombre;
@@ -40,13 +47,13 @@ async getAll(){
 async deleteById(id){
     const archivo = await fs.promises.readFile(this.nombre, 'utf-8');
     const archivoParseado = Json.parse(archivo);
-    let indexSeleccionado = null;
+    let indexSeleccionado = -1;
     archivoParseado.forEach(element, index =>{
         if (element.id==id){
             indexSeleccionado = index;
         }
     });
-    if (indexSeleccionado) {
+    if (indexSeleccionado != -1) {
         archivoParseado.splice(indexSeleccionado, 1);
         await fs.promises.writeFile(this.nombre, Json.stringify(arregloVacio, null,2));
     }
@@ -63,3 +70,15 @@ const implementacion = async () => {
     const lista = new Contenedor('productos.txt')
 
 };
+
+implementacion();
+
+
+//servidor
+const servidor = aplicacion.listen(port, () =>{
+    console.log(`servidor escuchando: ${servidor.address().port}`);
+
+});
+
+servidor.on('error', error => console.log(`Error: ${eror}`));
+//servidor
