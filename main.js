@@ -67,12 +67,31 @@ async deleteAll(){
 }
 
 const implementacion = async () => {
-    const lista = new Contenedor('productos.txt')
+   //const lista = new Contenedor('productos.txt')
 
 };
 
-implementacion();
+const lista = new Contenedor('productos.txt');
 
+
+//Endpoints
+
+aplicacion.get('/productos', async (peticion, respuesta)=> {
+    const all = await lista.getAll();
+    respuesta.json(all);
+});
+
+aplicacion.get('/indiceRandom', async (peticion, respuesta)=> {
+    
+    //const all = await lista.deleteById();
+    const all = await lista.getAll();
+    const random = Math.florr(Math.random() * all.lenght);
+    respuesta.json(all);
+    random:random
+    
+});
+
+//
 
 //servidor
 const servidor = aplicacion.listen(port, () =>{
